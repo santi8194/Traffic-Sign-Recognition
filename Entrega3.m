@@ -1,4 +1,4 @@
-E = imread('FotosB (22).jpg');
+E = imread('your-test-image.jpg');
 A = imresize(E, 0.3);
 figure();imshow(A);
 Alab = rgb2lab(A);
@@ -78,7 +78,7 @@ figure();imshow(V2);
 J = imdilate(V2,ones(3,3));
 h = ones(3,3)/9; 
 J = filter2(h, J);
-figure(); imshow(J);
+figure(); imshow(not(J));
 
 JT = imdilate(VT,ones(3,3));
 h = ones(3,3)/9; 

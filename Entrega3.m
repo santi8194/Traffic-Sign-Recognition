@@ -1,19 +1,19 @@
-E = imread('your-test-image.jpg');
+E = imread('bus1.jpg');
 A = imresize(E, 0.3);
-figure();imshow(A);
+% figure();imshow(A);
 Alab = rgb2lab(A);
-figure();
+% figure();
 imshow(uint8(Alab(:,:,2)));
 B = im2bw(uint8(Alab(:,:,2)),0.09);
-figure();
+% figure();
 imshow(B);
 C = imfill(B,'holes');
-figure();
+% figure();
 imshow(C);
 D(:,:,1) = A(:,:,1) .* uint8(C);
 D(:,:,2) = A(:,:,2) .* uint8(C);
 D(:,:,3) = A(:,:,3) .* uint8(C);
-figure();
+% figure();
 imshow(D);
 
 %HOUGH
@@ -42,18 +42,18 @@ for j = (x-r):(x+r)
   B3(i,j) = 1;
 end
 
-figure(); imshow(B3);
+% figure(); imshow(B3);
 B4 = imfill(B3,'holes');
 
 BF = im2bw(B4) & C;
-figure()
+% figure()
 imshow(BF);
 
 W(:,:,1) = A(:,:,1).* uint8(BF);
 W(:,:,2) = A(:,:,2).* uint8(BF);
 W(:,:,3) = A(:,:,3).* uint8(BF);
 
-figure()
+% figure()
 imshow(W);
 
 % Etiquetado de clases
@@ -67,20 +67,22 @@ V(:,:,3) = W(y-radio:y+radio, x-radio:x+radio,3);
 
 VT(:,:,1) = BF(y-radio:y+radio, x-radio:x+radio,1);
 
-figure(); 
+% figure(); 
 imshow(V);
 
 
 T = graythresh(V);
-V2 = not(im2bw(V, T));
+V2 = im2bw(V, T);
+% V2 = imclose(V2, ones(4,4));
 figure();imshow(V2);
 
-J = imdilate(V2,ones(3,3));
+J = imopen(V2,ones(4,4));
 h = ones(3,3)/9; 
 J = filter2(h, J);
-figure(); imshow(not(J));
+%J = imclose(J,ones(3,3));
+figure(); imshow(J);
 
-JT = imdilate(VT,ones(3,3));
+JT = imopen(VT,ones(4,4));
 h = ones(3,3)/9; 
 JT = filter2(h, JT);
 figure(); imshow(JT)
@@ -105,11 +107,13 @@ for q=1:size(s,2)
 end
 BZ = zeros(size(L));
 
-hold on
-for q=1:size(s,2)
-    f= round(propied(s(q)).BoundingBox);
+
+    f= round(propied(s(1)).BoundingBox);
     BZ(f(2):f(2)+f(4),f(1):f(1)+f(3))= J(f(2):f(2)+f(4),f(1):f(1)+f(3));
-end
+    
+    f= round(propied(s(2)).BoundingBox);
+    BZ(f(2):f(2)+f(4),f(1):f(1)+f(3))= imfill(J(f(2):f(2)+f(4),f(1):f(1)+f(3)), 'holes');
+    BZ = not(BZ);
 imshow(BZ);
 
 [L2, z2] = bwlabel(BZ,4);

@@ -78,7 +78,7 @@ figure();imshow(V2);
 J = imdilate(V2,ones(3,3));
 h = ones(3,3)/9; 
 J = filter2(h, J);
-figure(); imshow(J);
+figure(); imshow(not(J));
 
 JT = imdilate(VT,ones(3,3));
 h = ones(3,3)/9; 

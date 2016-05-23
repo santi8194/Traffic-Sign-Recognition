@@ -1,4 +1,4 @@
-E = imread('FotosB (22).jpg');
+E = imread('your-test-image.jpg');
 A = imresize(E, 0.3);
 figure();imshow(A);
 Alab = rgb2lab(A);

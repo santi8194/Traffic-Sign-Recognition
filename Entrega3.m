@@ -150,3 +150,21 @@ ds = Bcl_structure(X, opc);
 [T2, p2] = Bev_confusion(d, ds(:,2));
 [T3, p3] = Bev_confusion(d, ds(:,3));
 [T4, p4] = Bev_confusion(d, ds(:,4));
+
+% TESTING
+I = imopen(J, ones(6,8));
+[L, n] = bwlabel(I,4); figure(); imshow(L, [ ]);
+
+% Extraer caracteristicas de la imagen
+b(1).name = 'basicgeo'; b(1).options.show=1;
+b(2).name = 'hugeo'; b(2).options.show=1;
+b(3).name = 'flusser'; b(3).options.show=1;
+op.b = b;
+[X,Xn] = Bfx_geo(L, op);
+
+%cargar datos de entrenamiento desde /Muestras fotos
+%buenas/training-data.mat
+load('training.mat');
+
+% Clasificacion de objeto
+ds = Bcl_structure(X, opc);

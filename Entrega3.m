@@ -117,10 +117,6 @@ end
 J = not(J);
 imshow(J); 
 
-% [L2, z2] = bwlabel(J,4);
-% figure();
-% imshow(L2, [ ]);
-
 %Extraccion de caracteristicas
 % [d,D] = Bio_labelregion(not(J),L2,3);
 % 

@@ -1,4 +1,4 @@
-E = imread('bus1.jpg');
+E = imread('park3.jpg');
 A = imresize(E, 0.3);
 % figure();imshow(A);
 Alab = rgb2lab(A);
@@ -8,6 +8,7 @@ B = im2bw(uint8(Alab(:,:,2)),0.09);
 % figure();
 imshow(B);
 C = imfill(B,'holes');
+
 % figure();
 imshow(C);
 D(:,:,1) = A(:,:,1) .* uint8(C);
@@ -76,9 +77,11 @@ V2 = not(im2bw(V, T));
 % figure();imshow(V2);
 
 J = imclose(V2,ones(4,4));
-J = imopen(J,strel('line',10,45));
+J = imopen(J,strel('line',3,45));
+J = imclose(J,ones(2,2));
 h = ones(3,3)/9; 
 J = filter2(h, J);
+J = im2bw(J);
 figure(); imshow(J);
 
 JT = imdilate(VT,ones(3,3));
@@ -86,8 +89,7 @@ h = ones(3,3)/9;
 JT = filter2(h, JT);
 % figure(); imshow(JT)
 
-JF = (J.*JT),ones(7,7); 
-JF = imerode(JF,ones(7,7)); 
+JF = (J.*JT);  
 [L, z] = bwlabel(JF,4);
 figure();
 imshow(L, [ ]);
@@ -115,9 +117,9 @@ end
 J = not(J);
 imshow(J); 
 
-% [L2, z2] = bwlabel(J,4);
-% figure();
-% imshow(L2, [ ]);
+[L2, z2] = bwlabel(J,4);
+figure();
+imshow(L2, [ ]);
 
 %Extraccion de caracteristicas
 % [d,D] = Bio_labelregion(not(J),L2,3);
